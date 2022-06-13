@@ -10,7 +10,7 @@ jobs:
       - node/install:
           node-version: '18.3.0'
       - run: sudo npm install -g npm@latest
-      - run: npm run test
+      - run: sudo npm run test
 workflows:
   test_my_app:
     jobs:
