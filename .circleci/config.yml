@@ -1,16 +1,60 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.0
+
 version: '2.1'
-orbs:
-  typescript: vidsy/typescript@1.2.1
+whitelist: &whitelist
+  paths:
+    - dist/*
+    - node_modules/*
+    - src/*
+    - package.json
+    - README.md
+    - tsconfig.json
 jobs:
-  test:
-    docker: 
-      - image: 'cimg/base:stable'
+  checkout:
+    <<: *defaults
+
     steps:
       - checkout
-      - node/install:
-          node-version: '18.3.0'
-      - run: npm run test
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: ~/repo
+          <<: *whitelist
+  test:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - run:
+          name: Test TypeScript code
+          command: npm test
+
+      - persist_to_workspace:
+          root: ~/repo
+          <<: *whitelist
+
 workflows:
-  test_my_app:
+  test_suite:
     jobs:
-      - test
+      - checkout
+      - test:
+        requires:
+          - checkout
