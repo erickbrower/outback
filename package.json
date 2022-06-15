@@ -7,7 +7,7 @@
     "build": "npx tsc",
     "start": "npx tsc & node .",
     "dev": "npx tsc -w & nodemon",
-    "test": "node ./node_modules/jest/bin/jest.js ./src --verbose"
+    "test": "node ./node_modules/jest/bin/jest.js ./dist --verbose"
   },
   "author": "erickbrower",
   "license": "ISC",
