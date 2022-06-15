@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "node ./node_modules/typescript/bin/tsc",
     "start": "npx tsc & node .",
     "dev": "npx tsc -w & nodemon",
     "test": "node ./node_modules/jest/bin/jest.js ./dist --verbose"

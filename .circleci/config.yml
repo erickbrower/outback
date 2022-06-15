@@ -36,6 +36,20 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           <<: *whitelist
+  build:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - run:
+          name: Build JS to Dist
+          command: npm run build
+
+      - persist_to_workspace:
+          root: ~/repo
+          <<: *whitelist
 
   test:
     <<: *defaults
@@ -56,6 +70,9 @@ workflows:
   test_suite:
     jobs:
       - checkout
-      - test:
+      - build:
           requires:
             - checkout
+      - test:
+          requires:
+            - build
