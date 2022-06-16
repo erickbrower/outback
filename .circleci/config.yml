@@ -56,11 +56,15 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/repo/dist
+          at: ~/repo
 
       - run:
           name: Test TypeScript code
-          command: npm test
+          command: "ls && npm test"
+
+      - persist_to_workspace:
+          root: ~/repo
+          <<: *whitelist
 
 workflows:
   test_suite:
