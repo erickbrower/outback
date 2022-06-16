@@ -9,9 +9,11 @@ whitelist: &whitelist
     - dist/*
     - node_modules/*
     - src/*
+    - views/*
     - package.json
     - README.md
     - tsconfig.json
+    - jest.config.js
 jobs:
   checkout:
     <<: *defaults
@@ -60,7 +62,7 @@ jobs:
 
       - run:
           name: Test TypeScript code
-          command: "ls && npm test"
+          command: npm test
 
       - persist_to_workspace:
           root: ~/repo
